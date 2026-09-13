@@ -119,8 +119,8 @@ func TestPreviewShowsProviderExcludedVendorDiff(t *testing.T) {
 		t.Fatalf("entries = %d, want 1", len(preview.Entries))
 	}
 	entry := preview.Entries[0]
-	if entry.Path != "vendor/pkg/keep.go" || entry.WillReview || entry.ExcludeReason != ExcludeDefaultPath {
-		t.Errorf("entry = %+v, want vendor/pkg/keep.go excluded as default_path", entry)
+	if entry.Path != "vendor/pkg/keep.go" || entry.WillReview || entry.ExcludeReason != ExcludeProviderDirectory {
+		t.Errorf("entry = %+v, want vendor/pkg/keep.go excluded as provider_directory", entry)
 	}
 }
 
