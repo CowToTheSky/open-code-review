@@ -411,11 +411,6 @@ func matchGitignoreDirectory(relPath, pattern string) bool {
 	return false
 }
 
-// filterDiffs removes diffs whose file paths are excluded.
-func (p *Provider) filterDiffs(diffs []model.Diff) []model.Diff {
-	return p.partitionDiffs(diffs).Included
-}
-
 // partitionDiffs keeps diffs filtered by built-in directory rules available
 // for reporting while preserving the review input as the Included slice.
 func (p *Provider) partitionDiffs(diffs []model.Diff) DiffSet {
