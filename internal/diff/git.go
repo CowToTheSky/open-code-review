@@ -80,13 +80,14 @@ func (p *Provider) SetAllowedProviderDirectories(dirs []string) error {
 		if !strings.HasSuffix(normalized, "/") {
 			normalized += "/"
 		}
-		if normalized == ".git/" || normalized == ".svn/" {
-			return fmt.Errorf("provider directory %q cannot be made reviewable", dir)
-		}
-		if !isProviderDirectory(normalized) {
+		canonical := providerDirectoryPrefix(normalized)
+		if canonical == "" {
 			return fmt.Errorf("unknown provider directory %q", dir)
 		}
-		allowed[normalized] = struct{}{}
+		if canonical == ".git/" || canonical == ".svn/" {
+			return fmt.Errorf("provider directory %q cannot be made reviewable", dir)
+		}
+		allowed[canonical] = struct{}{}
 	}
 	p.allowedProviderDirs = allowed
 	return nil

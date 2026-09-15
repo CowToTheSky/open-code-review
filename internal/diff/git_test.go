@@ -128,6 +128,20 @@ func TestSetAllowedProviderDirectoriesRejectsInvalidDirectories(t *testing.T) {
 	}
 }
 
+func TestSetAllowedProviderDirectoriesUsesCanonicalProviderPrefix(t *testing.T) {
+	original := providerDirIgnoreDirs
+	providerDirIgnoreDirs = append(providerDirIgnoreDirs, "RPM/")
+	t.Cleanup(func() { providerDirIgnoreDirs = original })
+
+	provider := NewWorkspaceProvider(t.TempDir(), nil)
+	if err := provider.SetAllowedProviderDirectories([]string{"rpm/"}); err != nil {
+		t.Fatalf("SetAllowedProviderDirectories: %v", err)
+	}
+	if provider.isProviderDirExcluded("RPM/package.spec") {
+		t.Fatal("canonical provider prefix should be allowed")
+	}
+}
+
 func TestGetDiffSetWalksChangesetOrder(t *testing.T) {
 	repo := t.TempDir()
 	runGitTest(t, repo, "init", "-q")
