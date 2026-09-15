@@ -26,6 +26,15 @@ func ProviderDirPrefix(relPath string) string {
 	return ""
 }
 
+func isProviderDirectory(prefix string) bool {
+	for _, candidate := range providerDirIgnoreDirs {
+		if prefix == candidate {
+			return true
+		}
+	}
+	return false
+}
+
 // LoadGitignorePatterns reads and parses .gitignore patterns from the given
 // repository root. Returns nil if the file is missing or unreadable.
 func LoadGitignorePatterns(repoDir string) []string {
